@@ -20,3 +20,29 @@
     line-height: 15px;
   }
 }
+
+.popup__input:focus {
+  outline: none;
+}
+
+.popup__input-error {
+  position: absolute;
+  text-align: left;
+  color: #ff0000;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 400;
+  display: none;
+}
+
+.popup__input_type_error {
+  border-bottom: 1px solid #ff0000;
+}
+
+.popup__error_visible {
+  display: block;
+}
+
+.popup__input-error:first-of-type {
+  margin-top: -10px;
+}
