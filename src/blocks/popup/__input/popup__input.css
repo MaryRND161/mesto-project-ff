@@ -46,3 +46,7 @@
 .popup__input-error:first-of-type {
   margin-top: -10px;
 }
+
+.popup__input-error:only-of-type {
+  margin-top: 0;
+}

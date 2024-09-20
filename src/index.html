@@ -13,7 +13,9 @@
   </header>
   <main class="content">
     <section class="profile page__section">
-      <div class="profile__image" style="background-image: url(<%=require('./images/avatar.jpg')%>);"></div>
+      <div class="profile__image" style="background-image: url(<%=require('./images/avatar.jpg')%>);">
+      </div>
+      <button class="profile__image-button"type="button"></button>
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button"></button>
@@ -31,6 +33,17 @@
       © 2024 Mesto Russia
     </p>
   </footer>
+  <div class="popup popup_avatar_edit popup_is-animated">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="edit-avatar" novalidate>
+        <input type="url" id="link-input-avatar" name="link-avatar" class="popup__input popup__input_type_url" placeholder="Ссылка на фото" required>
+        <span class="popup__input-error link-input-avatar-error"></span>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
   <div class="popup popup_type_edit popup_is-animated">
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
@@ -75,7 +88,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="like__group">
+        <button type="button" class="card__like-button"></button>
+        <span class="like__counter"></span>
+      </div>
     </div>
   </li>
 </template>
