@@ -158,7 +158,6 @@ formEditAvatar.addEventListener("submit", handleAvatarFormSubmit);
 
 formNewPlace.addEventListener("submit", function (evt) {
   evt.preventDefault();
-
   renderLoading(evt.target, true);
   addInitialCards({
     name: plaseNameInput.value,

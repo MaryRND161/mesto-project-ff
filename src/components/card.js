@@ -13,7 +13,10 @@ function createCard(cardData, userId, deleteCard, toggleIsLiked, viewTheImage) {
   likeCounter.textContent = cardData.likes.length;
   cardItem.querySelector(".card__title").textContent = cardData.name;
   if (userId === cardData.owner._id) {
-    deleteButton.addEventListener("click", () => deleteCard(cardData._id));
+    deleteButton.addEventListener("click", function (evt) {
+      deleteCard(cardData._id);
+      evt.target.parentElement.remove();
+    });
   } else {
     deleteButton.remove();
   }
