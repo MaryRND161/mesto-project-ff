@@ -1,9 +1,9 @@
 import "../pages/index.css";
-import avatar from "../images/avatar.jpg";
-import card_1 from "../images/card_1.jpg";
-import card_2 from "../images/card_2.jpg";
-import card_3 from "../images/card_3.jpg";
-import { initialCards } from "../scripts/cards.js";
+//import avatar from "../images/avatar.jpg";
+//import card_1 from "../images/card_1.jpg";
+//import card_2 from "../images/card_2.jpg";
+//import card_3 from "../images/card_3.jpg";
+//import { initialCards } from "../scripts/cards.js";
 import { createCard, deleteCard, toggleIsLiked } from "../components/card.js";
 import {
   openPopup,
@@ -24,6 +24,8 @@ import {
   editedUserAvatar,
   addInitialCards,
 } from "../scripts/api.js";
+
+import { renderLoading } from "../scripts/utils.js";
 
 const content = document.querySelector(".content");
 const placesList = content.querySelector(".places__list");
@@ -51,7 +53,7 @@ const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 const popupTypeImage = document.querySelector(".popup_type_image");
 const popupCaption = popupTypeImage.querySelector(".popup__caption");
 const popupImage = popupTypeImage.querySelector(".popup__image");
-export let userId = "";
+let userId = "";
 let userAvatar = "";
 
 function viewTheImage(evt) {
@@ -85,14 +87,16 @@ profileImageButton.addEventListener("click", (evt) => {
 });
 
 function clearProfileInputs() {
-  plaseNameInput.value = "";
-  plaseLinkInput.value = "";
-  clearValidation(formNewPlace, validationConfig);
+  //plaseNameInput.value = "";
+  //plaseLinkInput.value = "";
+  formNewPlace.reset();
+  // clearValidation(formNewPlace, validationConfig);
 }
 
 profileAddButton.addEventListener("click", (evt) => {
   openPopup(popupTypeNewCard);
   clearProfileInputs();
+  clearValidation(formNewPlace, validationConfig);
 });
 
 closePopupButtons.forEach(function (item) {
@@ -105,14 +109,14 @@ popups.forEach(function (item) {
   item.addEventListener("click", closeOnClickOutside);
 });
 
-function renderLoading(form, isLoading) {
-  const submit = form.querySelector(".popup__button");
-  if (isLoading) {
-    submit.textContent = "Сохранение...";
-  } else {
-    submit.textContent = "Сохранить";
-  }
-}
+// function renderLoading(form, isLoading) {
+//   const submit = form.querySelector(".popup__button");
+//   if (isLoading) {
+//     submit.textContent = "Сохранение...";
+//   } else {
+//     submit.textContent = "Сохранить";
+//   }
+// }
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -124,13 +128,13 @@ function handleProfileFormSubmit(evt) {
     .then((result) => {
       profileTitle.textContent = result.name;
       profileDescription.textContent = result.about;
+      closePopup(popupTypeEdit);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       renderLoading(evt.target, false);
-      closePopup(popupTypeEdit);
     });
 }
 
@@ -142,13 +146,13 @@ function handleAvatarFormSubmit(evt) {
   })
     .then((result) => {
       profileAvatar.style.backgroundImage = `url(${result.avatar})`;
+      closePopup(popupAvatarEdit);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       renderLoading(evt.target, false);
-      closePopup(popupAvatarEdit);
     });
 }
 
@@ -173,28 +177,33 @@ formNewPlace.addEventListener("submit", function (evt) {
         viewTheImage
       );
       placesList.prepend(newPlaseElement);
+      clearProfileInputs();
       evt.target.reset();
+      closePopup(popupTypeNewCard);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       renderLoading(evt.target, false);
-      closePopup(popupTypeNewCard);
     });
 });
 
 enableValidation(validationConfig);
 
-Promise.all([getUserProfile(), getInitialCards()]).then((result) => {
-  userId = result[0]._id;
-  userAvatar = result[0].avatar;
-  profileTitle.textContent = result[0].name;
-  profileDescription.textContent = result[0].about;
-  profileAvatar.style.backgroundImage = `url(${userAvatar})`;
-  result[1].forEach((card) => {
-    placesList.append(
-      createCard(card, userId, deleteCard, toggleIsLiked, viewTheImage)
-    );
+Promise.all([getUserProfile(), getInitialCards()])
+  .then((result) => {
+    userId = result[0]._id;
+    userAvatar = result[0].avatar;
+    profileTitle.textContent = result[0].name;
+    profileDescription.textContent = result[0].about;
+    profileAvatar.style.backgroundImage = `url(${userAvatar})`;
+    result[1].forEach((card) => {
+      placesList.append(
+        createCard(card, userId, deleteCard, toggleIsLiked, viewTheImage)
+      );
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});

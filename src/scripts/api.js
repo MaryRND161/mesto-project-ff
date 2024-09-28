@@ -9,23 +9,13 @@ const config = {
 export const getUserProfile = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 };
 
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 };
 
 export function editedUserProfile(newProfile) {
@@ -36,12 +26,7 @@ export function editedUserProfile(newProfile) {
       name: newProfile.name,
       about: newProfile.about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 }
 
 export function editedUserAvatar(newAvatar) {
@@ -51,12 +36,7 @@ export function editedUserAvatar(newAvatar) {
     body: JSON.stringify({
       avatar: newAvatar.avatar,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 }
 
 export function addInitialCards(newCard) {
@@ -67,24 +47,14 @@ export function addInitialCards(newCard) {
       name: newCard.name,
       link: newCard.link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 }
 
 export function delInitialCards(cardId) {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 }
 
 export function likeCard(cardId) {
@@ -94,22 +64,19 @@ export function likeCard(cardId) {
     body: JSON.stringify({
       _id: cardId,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
 }
 
 export function unlikeCard(cardId) {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => renderResult(res));
+}
+
+function renderResult(result) {
+  if (result.ok) {
+    return result.json();
+  }
+  return Promise.reject(`Ошибка: ${result.status}`);
 }

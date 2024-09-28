@@ -3,7 +3,7 @@ import { delInitialCards, likeCard, unlikeCard } from "../scripts/api.js";
 const cardTemplate = document.querySelector("#card-template").content;
 
 function createCard(cardData, userId, deleteCard, toggleIsLiked, viewTheImage) {
-  const cardItem = cardTemplate.querySelector(".places__item").cloneNode(true);
+  const cardItem = getCardTemplate(cardTemplate);
   const cardImage = cardItem.querySelector(".card__image");
   const deleteButton = cardItem.querySelector(".card__delete-button");
   const likeButton = cardItem.querySelector(".card__like-button");
@@ -14,8 +14,7 @@ function createCard(cardData, userId, deleteCard, toggleIsLiked, viewTheImage) {
   cardItem.querySelector(".card__title").textContent = cardData.name;
   if (userId === cardData.owner._id) {
     deleteButton.addEventListener("click", function (evt) {
-      deleteCard(cardData._id);
-      evt.target.parentElement.remove();
+      deleteCard(evt.target.parentElement, cardData._id);
     });
   } else {
     deleteButton.remove();
@@ -30,10 +29,15 @@ function createCard(cardData, userId, deleteCard, toggleIsLiked, viewTheImage) {
   return cardItem;
 }
 
-function deleteCard(id) {
+const getCardTemplate = (cardItem) => {
+  return cardItem.querySelector(".places__item").cloneNode(true);
+};
+
+function deleteCard(card, id) {
   delInitialCards(id)
     .then((result) => {
       console.log(result);
+      card.remove();
     })
     .catch((err) => {
       console.log(err);
