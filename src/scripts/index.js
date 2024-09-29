@@ -87,10 +87,7 @@ profileImageButton.addEventListener("click", (evt) => {
 });
 
 function clearProfileInputs() {
-  //plaseNameInput.value = "";
-  //plaseLinkInput.value = "";
   formNewPlace.reset();
-  // clearValidation(formNewPlace, validationConfig);
 }
 
 profileAddButton.addEventListener("click", (evt) => {
@@ -108,15 +105,6 @@ closePopupButtons.forEach(function (item) {
 popups.forEach(function (item) {
   item.addEventListener("click", closeOnClickOutside);
 });
-
-// function renderLoading(form, isLoading) {
-//   const submit = form.querySelector(".popup__button");
-//   if (isLoading) {
-//     submit.textContent = "Сохранение...";
-//   } else {
-//     submit.textContent = "Сохранить";
-//   }
-// }
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -177,8 +165,8 @@ formNewPlace.addEventListener("submit", function (evt) {
         viewTheImage
       );
       placesList.prepend(newPlaseElement);
-      clearProfileInputs();
       evt.target.reset();
+      clearValidation(formNewPlace, validationConfig);
       closePopup(popupTypeNewCard);
     })
     .catch((err) => {
